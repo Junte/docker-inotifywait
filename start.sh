@@ -26,7 +26,7 @@ echo
 # Inotify part.
 #
 
-echo "[Starting inotifywait: ...]"
+echo "[Starting inotifywait ...]"
 
 inotifywait_command="inotifywait -e ${INOTIFY_EVENTS} ${INOTIFY_OPTONS} \"${VOLUMES}\""
 eval "$inotifywait_command" | \
