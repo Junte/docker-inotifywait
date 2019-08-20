@@ -26,8 +26,9 @@ echo
 # Inotify part.
 #
 
-inotifywait_command="inotifywait -e ${INOTIFY_EVENTS} ${INOTIFY_OPTONS} '${VOLUMES}'"
-echo "[Starting inotifywait: '${inotifywait_command}' ...]"
+echo "[Starting inotifywait: ...]"
+
+inotifywait_command="inotifywait -e ${INOTIFY_EVENTS} ${INOTIFY_OPTONS} \"${VOLUMES}\""
 eval "$inotifywait_command" | \
     while read -r notifies;
     do
