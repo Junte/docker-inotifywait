@@ -5,10 +5,9 @@
 #
 set -e
 
-CURL_OPTIONS_DEFAULT=
 INOTIFY_EVENTS_DEFAULT="create,delete,modify,move"
-INOTIFY_OPTONS_DEFAULT='--monitor'
-COMMAND_DEFAULT='ps'
+INOTIFY_OPTONS_DEFAULT=''
+COMMAND_DEFAULT='pwd'
 #
 # Display settings on standard out.
 #
@@ -17,7 +16,6 @@ echo "================"
 echo
 echo "  Command:          ${COMMAND:=${COMMAND_DEFAULT}}"
 echo "  Volumes:          ${VOLUMES}"
-echo "  Curl_Options:     ${CURL_OPTIONS:=${CURL_OPTIONS_DEFAULT}}"
 echo "  Inotify_Events:   ${INOTIFY_EVENTS:=${INOTIFY_EVENTS_DEFAULT}}"
 echo "  Inotify_Options:  ${INOTIFY_OPTONS:=${INOTIFY_OPTONS_DEFAULT}}"
 echo
@@ -26,15 +24,9 @@ echo
 # Inotify part.
 #
 
-echo "[Starting inotifywait ...]"
-
 inotifywait_command="inotifywait -e ${INOTIFY_EVENTS} ${INOTIFY_OPTONS} \"${VOLUMES}\""
-eval "$inotifywait_command" | \
-    while read -r notifies;
-    do
-    	echo "$notifies"
-        docker_command="docker ${COMMAND}"
-        echo "notify received, run docker command: ${docker_command}"
-        eval "$docker_command"
-    done
+echo "[Starting inotifywait [${inotifywait_command}] ...]"
 
+while eval "$inotifywait_command"; do
+    eval "${COMMAND}"
+done
