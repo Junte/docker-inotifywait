@@ -5,13 +5,13 @@ ENV DOWNLOAD_URL="https://download.docker.com/linux/static/stable/x86_64/docker-
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends  \
-                            inotify-tools \
-                            curl \
+    inotify-tools \
+    curl \
     && curl --insecure -L $DOWNLOAD_URL | tar -xz docker \
     && mv docker/docker /usr/local/bin/docker \
     && apt remove --purge -y curl \
     && apt-get autoremove -y
 
-COPY start.sh /start.sh
+COPY entrypoint.sh /entrypoint.sh
 
-CMD ["/start.sh"]
+ENTRYPOINT [ "/entrypoint.sh" ]
